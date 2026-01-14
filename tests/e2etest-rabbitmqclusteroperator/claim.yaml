@@ -1,0 +1,8 @@
+apiVersion: helm.hops.ops.com.ai/v1alpha1
+kind: RabbitmqClusterOperator
+metadata:
+  name: e2e-rabbitmq-cluster-operator
+  namespace: e2e-test
+spec:
+  clusterName: e2e-cluster
+  namespace: rabbitmq-system

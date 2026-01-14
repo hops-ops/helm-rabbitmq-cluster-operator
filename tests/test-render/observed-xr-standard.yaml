@@ -1,0 +1,20 @@
+apiVersion: helm.hops.ops.com.ai/v1alpha1
+kind: RabbitmqClusterOperator
+metadata:
+  name: rabbitmq-cluster-operator
+  namespace: example-env
+  uid: test-uid-standard
+spec:
+  clusterName: my-cluster
+  namespace: rabbitmq-system
+  labels:
+    team: platform
+    environment: production
+  providerConfigRef:
+    name: my-cluster
+    kind: ProviderConfig
+  values:
+    clusterOperator:
+      replicaCount: 1
+    msgTopologyOperator:
+      replicaCount: 1

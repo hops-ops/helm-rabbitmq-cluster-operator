@@ -1,0 +1,36 @@
+{{- $state := $.state }}
+{{- $rabbitmq := $state.rabbitmq }}
+
+{{- /* Build Helm values */}}
+{{- $defaultValues := dict
+  "fullnameOverride" "rabbitmq-cluster-operator"
+  "nameOverride" "rabbitmq-cluster-operator"
+}}
+
+{{- $helmValues := dict }}
+{{- if $rabbitmq.overrideAllValues | len }}
+  {{- $helmValues = $rabbitmq.overrideAllValues }}
+{{- else }}
+  {{- $helmValues = mustMergeOverwrite $defaultValues $rabbitmq.values }}
+{{- end }}
+
+---
+apiVersion: helm.m.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: {{ $rabbitmq.name }}-helm-release
+  labels: {{ $rabbitmq.labels | toJson }}
+  annotations:
+    {{ setResourceNameAnnotation "helm-release" }}
+spec:
+  managementPolicies: {{ $rabbitmq.managementPolicies | toJson }}
+  providerConfigRef:
+    name: {{ $rabbitmq.providerConfigRef.name }}
+    kind: {{ $rabbitmq.providerConfigRef.kind }}
+  forProvider:
+    chart:
+      name: rabbitmq-cluster-operator
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: "4.4.34"
+    namespace: {{ $rabbitmq.namespace }}
+    values: {{ $helmValues | toJson }}

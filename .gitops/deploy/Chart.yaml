@@ -1,0 +1,6 @@
+apiVersion: v2
+name: helm-rabbitmq-cluster-operator
+description: GitOps deployment chart for helm-rabbitmq-cluster-operator Crossplane configuration
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
